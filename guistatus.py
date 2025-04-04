@@ -35,10 +35,10 @@ class Status:
     def updateStatus(self):
         t = self.statusCb()
         if t is not None:
-            txt, temps, state = t
+            txt, temps, ts, state = t
             if txt != "":
                 self.textBox.insert(tk.END, txt)
             self.stateVar.set(constate.shortTxt(state))
-            self.executeTemps(temps)
+            self.executeTemps(temps, ts)
         else:
             self.write("Failed to get log")

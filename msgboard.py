@@ -39,6 +39,7 @@ class MsgBoard:
 
     def guiGetConInfo(self) -> tuple[str,
                                      list[int],
+                                     float,
                                      int] | None:
         isMine = self.lock.acquire(timeout=2.0)
         res = None
@@ -48,7 +49,7 @@ class MsgBoard:
                 txt = self.txt
                 self.txt = ""
             temp = list(self.conTemp)
-            res = txt, temp, self.conState
+            res = txt, temp, self.conTempTs, self.conState
             self.lock.release()
         return res
 

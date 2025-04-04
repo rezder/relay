@@ -88,6 +88,7 @@ class Server:
         :returns:
         - Text
         - Temperature a list 6
+        - Temerature last read timestamp
         - Connection state
         """
         return self.msgBoard.guiGetConInfo()
