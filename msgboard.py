@@ -5,7 +5,7 @@ import time
 
 class MsgBoard:
     def __init__(self):
-        self.conTxt = ""
+        self.txt = ""
         self.lock = threading.Lock()
         self.conTemp: list[int] = list()
         self.conTempTs = None
@@ -14,7 +14,7 @@ class MsgBoard:
         self.guiRelay: list[bool] = list()
 
     def reset(self):
-        self.conTxt = ""
+        self.txt = ""
         self.conTemp.clear()
         self.conState = constate.off
         self.guiIsStop = False
@@ -24,7 +24,7 @@ class MsgBoard:
         isMine = self.lock.acquire()
         if isMine:
             self.conState = st
-            self.conTxt = self.conTxt + "\n" + txt
+            self.txt = self.txt + "\n" + txt
             self.lock.release()
 
     def conSetTemp(self, temps: list[int]):
@@ -32,6 +32,7 @@ class MsgBoard:
         if isMine:
             self.conTemp = temps
             self.conTempTs = time.monotonic()
+            self.lock.release()
 
     def conGetGui(self) -> tuple[bool, list[bool]]:
         return self.guiStop, list(self.guiRelay)
@@ -48,6 +49,7 @@ class MsgBoard:
                 self.txt = ""
             temp = list(self.conTemp)
             res = txt, temp, self.conState
+            self.lock.release()
         return res
 
     def guiSetStop(self) -> bool:
@@ -62,6 +64,7 @@ class MsgBoard:
                 isInform = True
                 self.guiIsStop = True
                 self.txt = self.txt+"\n"+"Sending stop signal"
+                self.lock.release()
         return isInform
 
     def guiSetDone(self):
@@ -80,13 +83,14 @@ class MsgBoard:
         """
         isInform = False
         isMine = self.lock.acquire()
-        if isMine and not self.guiIsStop:
-            if self.conState in [constate.connected,
-                                 constate.connecting,
-                                 constate.broke]:
+        if isMine:
+            if not self.guiIsStop and self.conState in [constate.connected,
+                                                        constate.connecting,
+                                                        constate.broke]:
                 if len(self.guiRelay) == 0:
                     isInform = True
                 self.guiRelay = relays
+            self.lock.release()
         return isInform
 
     def setTxt(self, txt):
