@@ -31,7 +31,7 @@ class MsgBoard:
         isMine = self.lock.acquire()
         if isMine:
             self.conTemp = temps
-            self.conTempTs = time.monotonic()
+            self.conTempTs = time.time()
             self.lock.release()
 
     def conGetGui(self) -> tuple[bool, list[bool]]:

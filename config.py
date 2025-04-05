@@ -15,32 +15,32 @@ class Config:
                 "1": {
                     "pin": 5,
                     "name": "no 1",
-                    "type": "ds18b20"
+                    "temptype": "ds18b20"
                 },
                 "2": {
                     "pin": 5,
                     "name": "no 2",
-                    "type": "ds18b20"
+                    "temptype": "ds18b20"
                 },
                 "3": {
                     "pin": 5,
                     "name": "no 3",
-                    "type": "ds18b20"
+                    "temptype": "ds18b20"
                 },
                 "4": {
                     "pin": 6,
                     "name": "no 4",
-                    "type": "ds18b20"
+                    "temptype": "ds18b20"
                 },
                 "5": {
                     "pin": 6,
                     "name": "no 5",
-                    "type": "ds18b20"
+                    "temptype": "ds18b20"
                 },
                 "6": {
                     "pin": 7,
                     "name": "no 6",
-                    "type": "resitor 8016"
+                    "temptype": "resistor 8016"
                 }
             },
             "relays": {
