@@ -28,7 +28,7 @@ class flds:
                str, int,
                "e")
     ts = Fld("ts", "Timestamp", "Time",
-             tsf, None)
+             tsf, None, "w")
     tempType = Fld("temptype", "Type", "Type",
                    str, str,
                    "w"
@@ -56,4 +56,4 @@ class relays:
     pin = FldDef(flds.pin, 2, 2, gf.FldLabel)
     name = FldDef(flds.name, 15, 15, gf.FldEntry)
     on = FldDef(flds.on, 1, 1, gf.FldBool)
-    onPos = FldDef(flds.onPos, 1, 1, gf.FldBool)
+    onPos = FldDef(flds.onPos, 1, 1, gf.FldBool, isDisable=True)

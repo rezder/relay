@@ -68,15 +68,16 @@ class Server:
                 self.conf.save()
         return done
 
-    def relaysUpd(self, relays: list[bool]):
+    def relaysUpd(self, relayJson: dict):
         """
         Saves the relay in config and sends it to
         the connection if needed.
         :param relays: The relay settings on or off
          """
-        self.conf.setRelays(relays)
+        self.conf.relaysSet(relayJson)
+        relaySett = self.conf.relaysGetSett()
         if self.exist():
-            if self.msgBoard.guiSetRelay(relays):
+            if self.msgBoard.guiSetRelay(relaySett):
                 self.loop.call_soon_threadsafe(guiSetEvent,
                                                self.guiEvent)
 

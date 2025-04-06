@@ -28,9 +28,9 @@ class Status:
     def subscribeTemps(self, fn):
         self.subTempList.append(fn)
 
-    def executeTemps(self, temps: list):
+    def executeTemps(self, temps: list, ts: float):
         for f in self.subTempList:
-            f(temps)
+            f(temps, ts)
 
     def updateStatus(self):
         t = self.statusCb()

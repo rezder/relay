@@ -1,1 +1,93 @@
-{"temps": {"1": {"pin": 5, "name": "no 1", "temptype": "ds18b20"}, "2": {"pin": 5, "name": "no 2", "temptype": "ds18b20"}, "3": {"pin": 5, "name": "no 3", "temptype": "ds18b20"}, "4": {"pin": 6, "name": "no 4", "temptype": "ds18b20"}, "5": {"pin": 6, "name": "no 5", "temptype": "ds18b20"}, "6": {"pin": 7, "name": "no 6", "temptype": "resistor 8016"}}, "relays": {"1": {"pin": 1, "name": "Relay 1", "on": false, "positiv-on": true}, "2": {"pin": 2, "name": "Relay 2", "on": false, "positiv-on": true}, "3": {"pin": 3, "name": "Relay 3", "on": false, "positiv-on": true}, "4": {"pin": 4, "name": "Relay 4", "on": false, "positiv-on": true}, "5": {"pin": 10, "name": "Relay 5", "on": false, "positiv-on": true}, "6": {"pin": 11, "name": "Relay 6", "on": false, "positiv-on": true}, "7": {"pin": 12, "name": "Relay 7", "on": false, "positiv-on": true}, "8": {"pin": 13, "name": "Relay 8", "on": false, "positiv-on": true}}, "mac": "dommy"}
+{
+  "temps": {
+    "1": {
+      "pin": 5,
+      "name": "No 1",
+      "temptype": "ds18b20"
+    },
+    "2": {
+      "pin": 5,
+      "name": "No 2",
+      "temptype": "ds18b20"
+    },
+    "3": {
+      "pin": 5,
+      "name": "No 3",
+      "temptype": "ds18b20"
+    },
+    "4": {
+      "pin": 6,
+      "name": "No 4",
+      "temptype": "ds18b20"
+    },
+    "5": {
+      "pin": 6,
+      "name": "No 5",
+      "temptype": "ds18b20"
+    },
+    "6": {
+      "pin": 7,
+      "name": "No 6",
+      "temptype": "resistor 8016"
+    }
+  },
+  "relays": {
+    "1": {
+      "no": "1",
+      "pin": 1,
+      "positiv-on": true,
+      "name": "Relay 1",
+      "on": true
+    },
+    "2": {
+      "no": "2",
+      "pin": 2,
+      "positiv-on": true,
+      "name": "Relay 2",
+      "on": false
+    },
+    "3": {
+      "no": "3",
+      "pin": 3,
+      "positiv-on": true,
+      "name": "Relay 3",
+      "on": false
+    },
+    "4": {
+      "no": "4",
+      "pin": 4,
+      "positiv-on": true,
+      "name": "Relay 4",
+      "on": false
+    },
+    "5": {
+      "no": "5",
+      "pin": 10,
+      "positiv-on": true,
+      "name": "Relay 5",
+      "on": false
+    },
+    "6": {
+      "no": "6",
+      "pin": 11,
+      "positiv-on": true,
+      "name": "Relay 6",
+      "on": false
+    },
+    "7": {
+      "no": "7",
+      "pin": 12,
+      "positiv-on": true,
+      "name": "Relay 7",
+      "on": false
+    },
+    "8": {
+      "no": "8",
+      "pin": 13,
+      "positiv-on": true,
+      "name": "Relay 8",
+      "on": false
+    }
+  },
+  "mac": null
+}

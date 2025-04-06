@@ -14,32 +14,32 @@ class Config:
             "temps": {
                 "1": {
                     "pin": 5,
-                    "name": "no 1",
+                    "name": "No 1",
                     "temptype": "ds18b20"
                 },
                 "2": {
                     "pin": 5,
-                    "name": "no 2",
+                    "name": "No 2",
                     "temptype": "ds18b20"
                 },
                 "3": {
                     "pin": 5,
-                    "name": "no 3",
+                    "name": "No 3",
                     "temptype": "ds18b20"
                 },
                 "4": {
                     "pin": 6,
-                    "name": "no 4",
+                    "name": "No 4",
                     "temptype": "ds18b20"
                 },
                 "5": {
                     "pin": 6,
-                    "name": "no 5",
+                    "name": "No 5",
                     "temptype": "ds18b20"
                 },
                 "6": {
                     "pin": 7,
-                    "name": "no 6",
+                    "name": "No 6",
                     "temptype": "resistor 8016"
                 }
             },
@@ -101,7 +101,7 @@ class Config:
         if not os.path.isfile(fileName):
             conf = Config.default()
             with open(fileName, "w") as f:
-                f.write(json.dumps(conf))
+                f.write(json.dumps(conf, indent=2))
         with open(fileName, "r") as f:
             conf = json.load(f)
         return conf
@@ -117,11 +117,25 @@ class Config:
         else:
             self.conf = Config.load(self.fileName)
 
-    def getRelayOns(self) -> list[bool]:
+    def relaysGetSett(self) -> list[bool]:
         res = list()
-        for r in self.conf["relays"]:
-            list.append(r["on"])
+        for r in self.conf["relays"].values():
+            on = True
+            if r["positiv-on"]:
+                on = r["on"]
+            else:
+                on = not r["on"]
+            res.append(on)
         return res
+
+    def relaysSet(self, relaysJson: dict):
+        self.conf["relays"] = relaysJson
+
+    def relaysGet(self) -> dict:
+        return self.conf["relays"]
+
+    def tempsGet(self) -> dict:
+        return self.conf["temps"]
 
     def getMac(self) -> str | None:
         mac = self.conf["mac"]
@@ -129,7 +143,7 @@ class Config:
             print("Mac address does not exist.\
             Try to get it from serial connection.")
             path = getSerialPath()
-            if path is None:
+            if path is not None:
                 print("Serial connection: {}".format(path))
                 con = serial.Serial(path,
                                     baudrate=DEFAULT_BAUDRATE,
@@ -149,6 +163,9 @@ class Config:
                     print("Mac address: {} was retrived".format(mac))
                 else:
                     print("Serial data was not complete after 10 seconds")
+            else:
+                print("Can not find arduino")
+                raise Exception("No arduino connected to get mac address")
 
         return mac
 

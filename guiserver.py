@@ -4,6 +4,9 @@ import time
 
 from server import Server
 from guistatus import Status
+from flds import temps as TempFlds
+from flds import relays as RelayFlds
+from flds import flds
 
 
 sys.path.append('/home/rho/Python/arduino/havsmolf/disp/')
@@ -21,8 +24,11 @@ class GuiServer:
         self.window = tk.Tk()
         self.window.title("Relay Server")
         self.server = Server()
+        self.server.start()
 
         # Main Frames
+
+        # Left Frame
         self.leftFrame = tk.Frame(self.window,
                                   highlightthickness=BORDER_WIDTH,
                                   highlightbackground=BORDER_COLOR)
@@ -30,17 +36,54 @@ class GuiServer:
                             fill=tk.Y,
                             expand=True,
                             padx=(0, 10))
+        tempflds = [TempFlds.no, TempFlds.pin, TempFlds.name,
+                    TempFlds.temp, TempFlds.ts]
+        self.tempTable = Table(self.window, self.leftFrame,
+                               TempFlds.no, None, tempflds)
+        self.tempTable.mainFrame.pack()
+        self.tempTable.show(self.server.conf.tempsGet())
+
+        relayflds = [RelayFlds.no, RelayFlds.pin, RelayFlds.onPos,
+                     RelayFlds.name, RelayFlds.on]
+        self.relayTable = Table(self.window, self.leftFrame,
+                                RelayFlds.no, None, relayflds)
+
+        self.relayTable.mainFrame.pack()
+
+        self.relayTable.show(self.server.conf.relaysGet())
+        for row in self.relayTable.rowsFlds.values():
+            row[flds.on.jId].postChgAdd(self.relayUpdCb)
+
+        # Righ frame
         self.rightFrame = self.rightFrame = tk.Frame(self.window,)
         self.rightFrame.pack(side=tk.LEFT, fill=tk.X, expand=True)
+
         self.statusGui = Status(self.rightFrame, self.server.getStatus)
         self.statusGui.mainFrame.pack()
+
+        # Gui inter connections
+        self.statusGui.subscribeTemps(self.tempUpdCb)
+
+
         # window callbacks
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+    def relayUpdCb(self):
+        relayJson, _, _, _ = self.relayTable.get()
+        self.server.relaysUpd(relayJson)
+
+    def tempUpdCb(self, temps, ts):
+        for i in range(len(temps)):
+            key = str(i+1)
+            self.tempTable.setFld(TempFlds.temp, key, temps[i])
+            self.tempTable.setFld(TempFlds.ts, key, ts)
 
     def logger(self, txt):
         self.statusGui.write(txt)
 
     def on_closing(self):
+        tabJson, _, _, _ = self.relayTable.get()
+        self.server.conf.relaysSet(tabJson)  # Save names
         self.logger("Clossing server")
         self.window.update_idletasks()
         self.statusGui.updateStatus()
@@ -48,6 +91,7 @@ class GuiServer:
         if send:
             self.window.after(1000, self.on_closingStopCheck)
         else:
+            self.server.stopCheck()
             self.window.destroy()
 
     def on_closingStopCheck(self):
