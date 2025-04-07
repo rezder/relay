@@ -1,9 +1,10 @@
-import temp
+
+from conn import convData
 
 
 def main():
     d = [True, True, False, False, False, False, False, False, True]
-    print(temp.convData(d))
+    print(convData(d))
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
-import constate
 import threading
 import time
+
+import constate
 
 
 class MsgBoard:

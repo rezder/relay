@@ -51,6 +51,12 @@ class GuiServer:
         self.relayTable.mainFrame.pack()
 
         self.relayTable.show(self.server.conf.relaysGet())
+        #  Quick and dirty a general solution for all input flds in table
+        # is need option and check mark have command but entry do not
+        # commend cant be removed but i do not think it matter just
+        # replace
+        # Entry properly need to bind on FocusOut
+        # cb need key and fld added like current bind
         for row in self.relayTable.rowsFlds.values():
             row[flds.on.jId].postChgAdd(self.relayUpdCb)
 
