@@ -36,7 +36,9 @@ class MsgBoard:
             self.lock.release()
 
     def conGetGui(self) -> tuple[bool, list[bool]]:
-        return self.guiStop, list(self.guiRelay)
+        relays = list(self.guiRelay)
+        self.guiRelay.clear()
+        return self.guiIsStop, relays
 
     def guiGetConInfo(self) -> tuple[str,
                                      list[int],

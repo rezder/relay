@@ -27,10 +27,10 @@ class Server:
     def start(self) -> bool:
         isOk = False
         if not self.exist():
-            if isOk:
-                self.serverThread = threading.Thread(
-                    target=self._startAsync)
-                self.serverThread.start()
+            self.serverThread = threading.Thread(
+                target=self._startAsync)
+            self.serverThread.start()
+            isOk = True
         return isOk
 
     def stopSend(self) -> bool:
@@ -112,7 +112,7 @@ class Server:
         await serve(self.msgBoard,
                     self.guiEvent,
                     self.conf.getMac(),
-                    self.conf.getRelayOns())
+                    self.conf.relaysGetSett())
 
 
 async def serve(msgBoard: MsgBoard,
@@ -141,5 +141,4 @@ def guiSetEvent(ev: ass.Event):
     should run in the asyncio thread
     to make it thread safe.
     """
-    print("setting gui event")
     ev.set()

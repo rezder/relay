@@ -6,13 +6,15 @@ import constate
 
 
 def convData(data: list[bool]) -> bytearray:
+    """
+    Convert boolean to bytes
+    """
     v = bytearray()
     for i in range(len(data)):
         if i % 8 == 0:
             v.append(0)
         if data[i]:
             vno = len(v)-1
-            print(vno)
             v[vno] = v[vno] + pow(2, i % 8)
     return v
 
@@ -44,11 +46,15 @@ class Conn:
                 await self.client.connect()
                 isTimeError = False
             except ass.TimeoutError:
-                txt = "Ble connect did not finish within 10 seconds.\
-                Trying again"
+                txt = "Ble connect did not finish within 10 seconds."\
+                    " Trying again"
+                self.msgBoard.setTxt(txt)
+            except bleak.exc.BleakDeviceNotFoundError:
+                txt = "Mac {} device was not found."\
+                    " Trying again".format(self.macAddr)
                 self.msgBoard.setTxt(txt)
 
-        self.client.start_notify(self.tempCharId, self.tempCb)
+        await self.client.start_notify(self.tempCharId, self.tempCb)
         self.notifyIsOn = True
 
         buff = convData(self.intRelays)
@@ -83,7 +89,7 @@ class Conn:
             if self.connTask.done():
                 ex = self.connTask.exception()
                 if ex is not None:
-                    txt = "Connection task failed with: {}"
+                    txt = "Connection task failed with: {}".format(ex)
                     self.msgBoard.conSetState(constate.broke, txt)
 
                 self.connTask = None
@@ -116,6 +122,11 @@ class Conn:
                     await self.connTask
                 except ass.CancelledError:
                     pass
+            else:
+                ex = self.connTask.exception()
+                if ex is not None:
+                    txt = "Connection task failed with: {}".format(ex)
+                    self.msgBoard.conSetState(constate.broke, txt)
 
             self.connTask = None
 

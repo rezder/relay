@@ -81,8 +81,8 @@ class GuiServer:
     def tempUpdCb(self, temps, ts):
         for i in range(len(temps)):
             key = str(i+1)
-            self.tempTable.setFld(TempFlds.temp, key, temps[i])
-            self.tempTable.setFld(TempFlds.ts, key, ts)
+            self.tempTable.setFld(TempFlds.temp.fld, key, temps[i])
+            self.tempTable.setFld(TempFlds.ts.fld, key, ts)
 
     def logger(self, txt):
         self.statusGui.write(txt)

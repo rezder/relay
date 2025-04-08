@@ -37,7 +37,7 @@
       "pin": 1,
       "positiv-on": true,
       "name": "Relay 1",
-      "on": true
+      "on": false
     },
     "2": {
       "no": "2",
@@ -89,5 +89,5 @@
       "on": false
     }
   },
-  "mac": null
+  "mac": "f0:f5:bd:77:06:3d"
 }

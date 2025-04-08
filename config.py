@@ -118,6 +118,11 @@ class Config:
             self.conf = Config.load(self.fileName)
 
     def relaysGetSett(self) -> list[bool]:
+        """
+        Returns a the relay setting a list
+        of booleans. True does not always mean
+        on it depend on the positive on setting
+        """
         res = list()
         for r in self.conf["relays"].values():
             on = True
@@ -140,8 +145,8 @@ class Config:
     def getMac(self) -> str | None:
         mac = self.conf["mac"]
         if mac is None:
-            print("Mac address does not exist.\
-            Try to get it from serial connection.")
+            print("Mac address does not exist."
+                  "Try to get it from serial connection.")
             path = getSerialPath()
             if path is not None:
                 print("Serial connection: {}".format(path))
