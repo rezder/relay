@@ -111,7 +111,7 @@ class Config:
             f.write(json.dumps(self.conf, indent=2))
 
     def __init__(self, isDefault=False):
-        self.fileName = "./relayserver.json"
+        self.fileName = "./data/relayserver.json"
         if isDefault:
             self.conf = Config.default()
         else:

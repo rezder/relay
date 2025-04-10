@@ -1,7 +1,8 @@
 import sys
 import time
 
-sys.path.append('/home/rho/Python/arduino/havsmolf/disp/')
+#sys.path.append('/home/rho/Python/arduino/havsmolf/disp/')
+sys.path.append('../disp/')
 from guiflds import Fld
 import guiflds as gf
 from guiflddefs import FldDef

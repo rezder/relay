@@ -9,7 +9,8 @@ from flds import relays as RelayFlds
 from flds import flds
 
 
-sys.path.append('/home/rho/Python/arduino/havsmolf/disp/')
+#sys.path.append('/home/rho/Python/arduino/havsmolf/disp/')
+sys.path.append('../disp/')
 #sys.path.insert(0, '/home/rho/Python/arduino/havsmolf/disp/')
 import guiflds as gf
 from guijsontable import Table
