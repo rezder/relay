@@ -13,39 +13,18 @@ def tsf(ts: float) -> str:
 
 
 class flds:
-    no = Fld("no", "No", "No",
-             str, str,
-             "w",
-             isKey=True
-             )
-    pin = Fld("pin", "Pin", "Pin",
-              str, int,
-              "e")
-    name = Fld("name", "Name", "Name",
-               str, str,
-               "w"
-               )
-    temp = Fld("temp", "Temperature", "Temp",
-               str, int,
-               "e")
-    ts = Fld("ts", "Timestamp", "Time",
-             tsf, None, "w")
-    tempType = Fld("temptype", "Type", "Type",
-                   str, str,
-                   "w"
-                   )
-    on = Fld("on", "On", "On",
-             None, None,
-             "e"
-             )
-    onPos = Fld("positiv-on", "On Positive", "On Pos",
-                None, None,
-                "e"
-                )
+    no = Fld("no", "No", "No", str)
+    pin = Fld("pin", "Pin", "Pin", int)
+    name = Fld("name", "Name", "Name", str)
+    temp = Fld("temp", "Temperature", "Temp", int)
+    ts = Fld("ts", "Timestamp", "Time", float, toStr=tsf)
+    tempType = Fld("temptype", "Type", "Type", str)
+    on = Fld("on", "On", "On", bool)
+    onPos = Fld("positiv-on", "On Positive", "On Pos", bool)
 
 
 class temps:
-    no = FldDef(flds.no, 2, 2, gf.FldLabel)
+    no = FldDef(flds.no, 2, 2, gf.FldLabel, isKey=True)
     pin = FldDef(flds.pin, 2, 2, gf.FldLabel)
     name = FldDef(flds.name, 15, 15, gf.FldLabel)
     temp = FldDef(flds.temp, 4, 4, gf.FldLabel, isJson=False)
@@ -53,7 +32,7 @@ class temps:
 
 
 class relays:
-    no = FldDef(flds.no, 2, 2, gf.FldLabel)
+    no = FldDef(flds.no, 2, 2, gf.FldLabel, isKey=True)
     pin = FldDef(flds.pin, 2, 2, gf.FldLabel)
     name = FldDef(flds.name, 15, 15, gf.FldEntry)
     on = FldDef(flds.on, 1, 1, gf.FldBool)

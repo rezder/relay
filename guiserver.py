@@ -9,9 +9,9 @@ from flds import relays as RelayFlds
 from flds import flds
 
 
-#sys.path.append('/home/rho/Python/arduino/havsmolf/disp/')
+#  sys.path.append('/home/rho/Python/arduino/havsmolf/disp/')
 sys.path.append('../disp/')
-#sys.path.insert(0, '/home/rho/Python/arduino/havsmolf/disp/')
+#  sys.path.insert(0, '/home/rho/Python/arduino/havsmolf/disp/')
 import guiflds as gf
 from guijsontable import Table
 from gui import BORDER_COLOR, BORDER_WIDTH
@@ -19,7 +19,7 @@ from gui import BORDER_COLOR, BORDER_WIDTH
 
 class GuiServer:
     """
-    The gui of the display server.
+    The gui of the relay server.
     """
     def __init__(self):
         self.window = tk.Tk()
@@ -40,26 +40,19 @@ class GuiServer:
         tempflds = [TempFlds.no, TempFlds.pin, TempFlds.name,
                     TempFlds.temp, TempFlds.ts]
         self.tempTable = Table(self.window, self.leftFrame,
-                               TempFlds.no, None, tempflds)
+                               TempFlds.no, tempflds, isPopUp=False)
         self.tempTable.mainFrame.pack()
         self.tempTable.show(self.server.conf.tempsGet())
 
         relayflds = [RelayFlds.no, RelayFlds.pin, RelayFlds.onPos,
                      RelayFlds.name, RelayFlds.on]
         self.relayTable = Table(self.window, self.leftFrame,
-                                RelayFlds.no, None, relayflds)
+                                RelayFlds.no, relayflds, isPopUp=False,
+                                postChgCb=self.relayUpdCb)
 
         self.relayTable.mainFrame.pack()
 
         self.relayTable.show(self.server.conf.relaysGet())
-        #  Quick and dirty a general solution for all input flds in table
-        # is need option and check mark have command but entry do not
-        # commend cant be removed but i do not think it matter just
-        # replace
-        # Entry properly need to bind on FocusOut
-        # cb need key and fld added like current bind
-        for row in self.relayTable.rowsFlds.values():
-            row[flds.on.jId].postChgAdd(self.relayUpdCb)
 
         # Righ frame
         self.rightFrame = self.rightFrame = tk.Frame(self.window,)
@@ -71,11 +64,10 @@ class GuiServer:
         # Gui inter connections
         self.statusGui.subscribeTemps(self.tempUpdCb)
 
-
         # window callbacks
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-    def relayUpdCb(self):
+    def relayUpdCb(self, key, guiFld):
         relayJson, _, _, _ = self.relayTable.get()
         self.server.relaysUpd(relayJson)
 
