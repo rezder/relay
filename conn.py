@@ -25,7 +25,7 @@ class Conn:
         self.macAddr = mac
         self.intRelays = initRelays
         self.msgBoard = msgBoard
-        self.client = bleak.BleakClient(self.macAddr, timeout=10.0)
+        self.client = bleak.BleakClient(self.macAddr, timeout=15.0)
         self.notifyIsOn = False
         self.isInitSend = False
         self.dataCharId = bleak.uuids.normalize_uuid_32(201)
@@ -46,7 +46,7 @@ class Conn:
                 await self.client.connect()
                 isTimeError = False
             except ass.TimeoutError:
-                txt = "Ble connect did not finish within 10 seconds."\
+                txt = "Ble connect did not finish within 15 seconds."\
                     " Trying again"
                 self.msgBoard.setTxt(txt)
             except bleak.exc.BleakDeviceNotFoundError:
@@ -54,16 +54,21 @@ class Conn:
                     " Trying again".format(self.macAddr)
                 self.msgBoard.setTxt(txt)
 
+        txt = "Connected to {}".format(self.macAddr)
+        self.msgBoard.conSetState(constate.connected, txt)
+
         await self.client.start_notify(self.tempCharId, self.tempCb)
         self.notifyIsOn = True
+        txt = "Notify on temp is on"
+        self.msgBoard.setTxt(txt)
 
         buff = convData(self.intRelays)
         await self.client.write_gatt_char(self.dataCharId,
                                           buff,
                                           response=True)
         self.isInitSend = True
-        txt = "Connected to {}".format(self.macAddr)
-        self.msgBoard.conSetState(constate.connected, txt)
+        txt = "Relay init send"
+        self.msgBoard.setTxt(txt)
 
     def tempCb(self,
                sender: bleak.BleakGATTCharacteristic,
